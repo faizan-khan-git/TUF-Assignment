@@ -1,0 +1,183 @@
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.navButton:hover {
+  background: var(--bg-hover);
+  color: var(--primary-color);
+}
+
+.monthLabel {
+  display: block;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.weekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 1rem;
+}
+
+.weekDay {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0;
+}
+
+.weekendDay {
+  color: var(--primary-color);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 0.5rem;
+}
+
+.dayCell {
+  position: relative;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.25rem 0;
+}
+
+.dayInfo {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.notCurrentMonth {
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+.dayCell:hover .dayInfo:not(.selectedStart):not(.selectedEnd) {
+  background-color: var(--bg-hover);
+  color: var(--primary-hover);
+}
+
+.selectedStart, .selectedEnd {
+  background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.rangeStart::after, .rangeEnd::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--bg-hover);
+  z-index: -1;
+}
+
+.rangeStart::after {
+  left: 50%;
+  right: auto;
+}
+
+.rangeEnd::after {
+  right: 50%;
+  left: auto;
+}
+
+.dayCell.intermediateCell {
+  background-color: var(--bg-hover);
+}
+
+.intermediate {
+  background-color: var(--bg-hover);
+  border-radius: 0;
+  width: 100%;
+}
+
+.intermediate .dayNumber {
+  color: var(--primary-hover);
+  font-weight: 600;
+}
+
+.slideOutLeft {
+  animation: slideOutLeft 0.15s forwards ease-in;
+}
+.slideInRight {
+  animation: slideInRight 0.15s forwards ease-out;
+}
+.slideOutRight {
+  animation: slideOutRight 0.15s forwards ease-in;
+}
+.slideInLeft {
+  animation: slideInLeft 0.15s forwards ease-out;
+}
+
+@keyframes slideOutLeft {
+  to { transform: translateX(-20px); opacity: 0; }
+}
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+  to { transform: translateX(20px); opacity: 0; }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.holidayDot {
+  position: absolute;
+  bottom: 0px;
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dayCell:has(.selectedStart) .holidayDot,
+.dayCell:has(.selectedEnd) .holidayDot {
+  background-color: white;
+}

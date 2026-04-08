@@ -1,0 +1,126 @@
+.calendarPaper {
+  background: var(--bg-card);
+  width: 100%;
+  max-width: 900px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 1rem;
+}
+
+.bindingPlaceholder {
+  height: 20px;
+  background-color: var(--bg-card);
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0 2rem;
+  margin-top: -10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.themeSwitcher {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.themeButton {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.8);
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.themeButton:hover {
+  transform: scale(1.15);
+  border-color: white;
+}
+
+.activeTheme {
+  transform: scale(1.2);
+  border-color: white;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+}
+
+.spiralHole {
+  width: 8px;
+  height: 20px;
+  background-color: #27272a;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.8);
+  position: relative;
+}
+
+.spiralHole::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 2px;
+  width: 4px;
+  height: 18px;
+  background: linear-gradient(to right, #b4b4b4, #ffffff, #b4b4b4);
+  border-radius: 2px;
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+}
+
+.heroSection {
+  width: 100%;
+  height: 350px;
+  background-color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+}
+
+.heroImagePlaceholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.bottomSection {
+  display: flex;
+  flex-direction: row;
+  min-height: 400px;
+}
+
+.notesSection {
+  flex: 1;
+  padding: 2rem;
+  border-right: 1px solid var(--border-color);
+}
+
+.gridSection {
+  flex: 2;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .bottomSection {
+    flex-direction: column;
+  }
+  .notesSection {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}

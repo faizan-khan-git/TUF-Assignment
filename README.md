@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interactive Wall Calendar
 
-## Getting Started
+A polished, fully interactive React/Next.js component inspired by a physical wall calendar aesthetic. Built for the TUF Frontend Engineering Challenge.
 
-First, run the development server:
+## Features
+- **Wall Calendar Aesthetic**: Large hero image, dynamic Month/Year typography formatting. Integrated blue geometric overlays similar to real-life hangable calendars.
+- **Day Range Selector**: Click dates on the CSS-grid based calendar to select Date Ranges. Provides immediate visual feedback, handling start dates, end dates, and intermediate hover days dynamically.
+- **Integrated Notes**: A dynamic and persistent notes area. It adapts automatically, storing and loading memos specifically for the individual day, range, or month currently being observed. All managed gracefully via `localStorage`.
+- **Vanilla CSS Excellence**: TailwindCSS was actively removed and strictly avoided to demonstrate mastery of standard CSS. Achieved flawless layout control using pure CSS Modules, flexbox rules, pure gradients (lined paper effect), and modern CSS `clip-path` styling.
+- **Fully Responsive**: Elegantly collapses into a vertical stack on mobile devices.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## How to Run Locally
+1. Clone the repository and navigate to the project root folder (`TUF-Assignment`).
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Build for production:
+   ```bash
+   npm run build
+   ```
+5. Navigate to `http://localhost:3000` to interact with the responsive wall calendar in action.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
+- React & Next.js 15 (App Router, Strict Mode)
+- Vanilla CSS + CSS Modules
+- `date-fns` for lightweight date interpolation
+- `lucide-react` for interactive icons
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architectural Thought Process
+- **Design Strategy**: Instead of mimicking standard software web date-pickers, the UI specifically honors the physical spatial layout: The top is visual anchoring acting as the hero block, the bottom left serves as textual "memo paper" padding, and the bottom right is structured numerical layout.
+- **Component Separation**: Responsibilities are strictly segregated:
+  - `Calendar.tsx`: The primary state container directing logic between children.
+  - `Hero.tsx`: Visual layout, utilizing native CSS polygon clipping.
+  - `Grid.tsx`: Complex interpolation logic converting standard objects to a 2D calendar array.
+  - `Notes.tsx`: Abstracting persistent client-storage interactions.
