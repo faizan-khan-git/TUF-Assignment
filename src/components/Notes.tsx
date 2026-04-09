@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek } from 'date-fns';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import styles from './Notes.module.css';
 
 interface NotesProps {
@@ -8,8 +8,14 @@ interface NotesProps {
   endDate: Date | null;
 }
 
+interface NoteItem {
+  id: string;
+  text: string;
+}
+
 export default function Notes({ currentDate, startDate, endDate }: NotesProps) {
-  const [noteContent, setNoteContent] = useState('');
+  const [notes, setNotes] = useState<NoteItem[]>([]);
+  const [inputValue, setInputValue] = useState('');
 
   let keyContext = format(currentDate, 'yyyy-MM');
   let title = `Notes for ${format(currentDate, 'MMMM yyyy')}`;
@@ -41,27 +47,78 @@ export default function Notes({ currentDate, startDate, endDate }: NotesProps) {
 
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
-    setNoteContent(saved || '');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          setNotes(parsed);
+        } else {
+          setNotes([{ id: '1', text: saved }]);
+        }
+      } catch (e) {
+        if (saved.trim().length > 0) {
+          setNotes([{ id: Date.now().toString(), text: saved }]);
+        }
+      }
+    } else {
+      setNotes([]);
+    }
   }, [storageKey]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setNoteContent(value);
-    localStorage.setItem(storageKey, value);
+  const handleAddNote = () => {
+    if (inputValue.trim()) {
+      const newNotes = [...notes, { id: Date.now().toString(), text: inputValue.trim() }];
+      setNotes(newNotes);
+      localStorage.setItem(storageKey, JSON.stringify(newNotes));
+      setInputValue('');
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddNote();
+    }
+  };
+
+  const handleDeleteNote = (id: string) => {
+    const newNotes = notes.filter(n => n.id !== id);
+    setNotes(newNotes);
+    localStorage.setItem(storageKey, JSON.stringify(newNotes));
   };
 
   return (
     <div className={styles.notesContainer}>
       <h3 className={styles.notesTitle}>{title}</h3>
-      <div className={styles.paperTextarea}>
-        <textarea
-          className={styles.textarea}
-          value={noteContent}
-          onChange={handleChange}
-          placeholder="Jot down memos here..."
-          spellCheck="false"
+      
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          className={styles.input}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type a note..."
         />
-        <div className={styles.lines}></div>
+        <button onClick={handleAddNote} className={styles.addButton}>Add</button>
+      </div>
+
+      <div className={styles.notesList}>
+        {notes.length === 0 ? (
+          <p className={styles.emptyMessage}>No notes right now. Add a note to get started!</p>
+        ) : (
+          notes.map(note => (
+            <div key={note.id} className={styles.noteItem}>
+              <span className={styles.noteText}>{note.text}</span>
+              <button 
+                className={styles.deleteButton} 
+                onClick={() => handleDeleteNote(note.id)}
+                aria-label="Delete note"
+              >
+                X
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

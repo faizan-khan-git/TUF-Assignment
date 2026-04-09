@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Calendar.module.css';
 import Hero from './Hero';
 import Grid from './Grid';
@@ -10,6 +10,38 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    const savedCurrent = localStorage.getItem('calendar-current-date');
+    if (savedCurrent) setCurrentDate(new Date(savedCurrent));
+
+    const savedStart = localStorage.getItem('calendar-start-date');
+    if (savedStart) setStartDate(new Date(savedStart));
+
+    const savedEnd = localStorage.getItem('calendar-end-date');
+    if (savedEnd) setEndDate(new Date(savedEnd));
+    
+    setIsInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    
+    localStorage.setItem('calendar-current-date', currentDate.toISOString());
+    
+    if (startDate) {
+      localStorage.setItem('calendar-start-date', startDate.toISOString());
+    } else {
+      localStorage.removeItem('calendar-start-date');
+    }
+    
+    if (endDate) {
+      localStorage.setItem('calendar-end-date', endDate.toISOString());
+    } else {
+      localStorage.removeItem('calendar-end-date');
+    }
+  }, [currentDate, startDate, endDate, isInitialized]);
   
   const themes = [
     { name: 'Sky', color: '#0ea5e9', hover: '#0284c7' },
